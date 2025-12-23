@@ -50,7 +50,7 @@ jobs:
       - name: '🩹 Apply patches'
         working-directory: esp-hosted
         run: |
-          PATCHES_DIR="${{ github.workspace }}/${{ matrix.target }}/patches/${{ matrix.esp_hosted_version }}"
+          PATCHES_DIR="${{ github.workspace }}/${{ matrix.target }}/${{ matrix.esp_hosted_version }}/patches"
           if [ -d "$PATCHES_DIR" ]; then
             for patch in "$PATCHES_DIR"/*.patch; do
               echo "🩹 Applying $(basename $patch)..."
@@ -67,7 +67,7 @@ jobs:
           source esp-idf/export.sh
           cd esp-hosted/esp_hosted_fg/esp/esp_driver/network_adapter
           idf.py set-target ${{ matrix.esp_chip }}
-          cp "${{ github.workspace }}/${{ matrix.target }}/sdkconfig.defaults.${{ matrix.esp_chip }}" \
+          cp "${{ github.workspace }}/${{ matrix.target }}/${{ matrix.esp_hosted_version }}/sdkconfig.defaults.${{ matrix.esp_chip }}" \
              sdkconfig.defaults.${{ matrix.esp_chip }}
           rm -f sdkconfig
           idf.py build

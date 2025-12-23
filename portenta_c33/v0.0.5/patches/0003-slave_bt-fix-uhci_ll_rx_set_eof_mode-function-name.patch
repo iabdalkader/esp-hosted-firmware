@@ -1,7 +1,7 @@
-From 9a6ee881ca5efe4dc0ff4b5ec14cb5a2b76ee245 Mon Sep 17 00:00:00 2001
+From a39171980c4b0bf6a2bd803d9dcbb3926c974276 Mon Sep 17 00:00:00 2001
 From: iabdalkader <i.abdalkader@gmail.com>
-Date: Tue, 23 Dec 2025 14:20:46 +0100
-Subject: [PATCH 2/2] slave_bt: fix uhci_ll_rx_set_eof_mode function name.
+Date: Tue, 23 Dec 2025 19:02:10 +0100
+Subject: [PATCH 3/3] slave_bt: fix uhci_ll_rx_set_eof_mode function name.
 
 Signed-off-by: iabdalkader <i.abdalkader@gmail.com>
 ---
