@@ -9,14 +9,6 @@ Pre-built ESP-Hosted firmware binaries for Arduino boards.
 | portenta_c33 | ESP32-C3 | v1.0.0.0.0 | v5.4 |
 | portenta_c33 | ESP32-C3 | v0.0.5 | v5.1 |
 
-## 🏗️ Building
-
-### Local Build
-
-```bash
-./build.sh
-```
-
 ### CI/CD
 
 The GitHub Actions workflow automatically builds firmware for all targets on:
@@ -27,14 +19,14 @@ The GitHub Actions workflow automatically builds firmware for all targets on:
 ## 📁 Structure
 
 ```
-├── <target>/
-│   ├── sdkconfig.defaults.<chip>
-│   └── patches/
-│       └── <version>/
-│           └── *.patch
 ├── tools/
 │   └── combine.py
-└── build.sh
+└── <target>/
+    │
+    ├── patches/
+    │      └── <version>/
+    │          └── *.patch
+    └── sdkconfig.defaults.<chip>
 ```
 
 ## 🚀 Flashing
