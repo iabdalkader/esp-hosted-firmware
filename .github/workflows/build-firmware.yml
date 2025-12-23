@@ -1,0 +1,102 @@
+name: '🔧 Build ESP-Hosted Firmware'
+
+on:
+  push:
+    tags: ['*']
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: '🏗️ Build ${{ matrix.target }} (${{ matrix.esp_hosted_version }})'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: portenta_c33
+            esp_chip: esp32c3
+            esp_hosted_ref: release/fg-1.0.0.0.0
+            esp_hosted_version: v1.0.0.0.0
+            esp_idf_ref: release/v5.4
+
+          - target: portenta_c33
+            esp_chip: esp32c3
+            esp_hosted_ref: fe0b10584417629908cee8141699c2f35ea05a25
+            esp_hosted_version: v0.0.5
+            esp_idf_ref: release/v5.1
+
+    steps:
+      - name: '📥 Checkout'
+        uses: actions/checkout@v4
+
+      - name: '🐍 Setup Python'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.0'
+
+      - name: '📦 Clone esp-idf'
+        run: |
+          git clone --branch ${{ matrix.esp_idf_ref }} --depth 1 --recursive \
+            https://github.com/espressif/esp-idf.git
+
+      - name: '📦 Clone esp-hosted'
+        run: |
+          git clone https://github.com/espressif/esp-hosted.git --recursive
+          cd esp-hosted
+          git checkout ${{ matrix.esp_hosted_ref }}
+
+      - name: '🩹 Apply patches'
+        working-directory: esp-hosted
+        run: |
+          PATCHES_DIR="${{ github.workspace }}/${{ matrix.target }}/patches/${{ matrix.esp_hosted_version }}"
+          if [ -d "$PATCHES_DIR" ]; then
+            for patch in "$PATCHES_DIR"/*.patch; do
+              echo "🩹 Applying $(basename $patch)..."
+              patch -p1 < "$patch"
+            done
+          fi
+
+      - name: '🛠️ Setup ESP-IDF'
+        working-directory: esp-idf
+        run: ./install.sh ${{ matrix.esp_chip }}
+
+      - name: '🏗️ Build firmware'
+        run: |
+          source esp-idf/export.sh
+          cd esp-hosted/esp_hosted_fg/esp/esp_driver/network_adapter
+          idf.py set-target ${{ matrix.esp_chip }}
+          cp "${{ github.workspace }}/${{ matrix.target }}/sdkconfig.defaults.${{ matrix.esp_chip }}" \
+             sdkconfig.defaults.${{ matrix.esp_chip }}
+          rm -f sdkconfig
+          idf.py build
+
+      - name: '📦 Combine binaries'
+        run: python3 tools/combine.py ${{ matrix.target }} ${{ matrix.esp_hosted_version }}
+
+      - name: '⬆️ Upload artifact'
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-${{ matrix.target }}-${{ matrix.esp_hosted_version }}
+          path: ${{ matrix.target }}-${{ matrix.esp_hosted_version }}.bin
+
+  release:
+    name: '🚀 Create Release'
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
+    steps:
+      - name: '📥 Download artifacts'
+        uses: actions/download-artifact@v4
+        with:
+          path: firmware
+          merge-multiple: true
+
+      - name: '🎉 Create Release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: firmware/*.bin
+          generate_release_notes: true

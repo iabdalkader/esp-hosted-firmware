@@ -1,0 +1,32 @@
+From 046d1805c2a5ac93e6309c73a6d64e5c72dd6a6a Mon Sep 17 00:00:00 2001
+From: iabdalkader <i.abdalkader@gmail.com>
+Date: Tue, 23 Dec 2025 13:54:09 +0100
+Subject: [PATCH 2/2] slave_bt: Fix bluetooth uart pins.
+
+Signed-off-by: iabdalkader <i.abdalkader@gmail.com>
+---
+ .../esp/esp_driver/network_adapter/main/slave_bt.h        | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/esp_hosted_fg/esp/esp_driver/network_adapter/main/slave_bt.h b/esp_hosted_fg/esp/esp_driver/network_adapter/main/slave_bt.h
+index 1d2718e..36f4155 100644
+--- a/esp_hosted_fg/esp/esp_driver/network_adapter/main/slave_bt.h
++++ b/esp_hosted_fg/esp/esp_driver/network_adapter/main/slave_bt.h
+@@ -102,10 +102,10 @@
+ 
+     #if defined(CONFIG_IDF_TARGET_ESP32C3)
+ 
+-      #define BT_TX_PIN         5
+-      #define BT_RX_PIN         18
+-      #define BT_RTS_PIN        19
+-      #define BT_CTS_PIN        8
++      #define BT_TX_PIN         21
++      #define BT_RX_PIN         20
++      #define BT_RTS_PIN        4
++      #define BT_CTS_PIN        3
+ 
+     #elif defined(CONFIG_IDF_TARGET_ESP32S3)
+ 
+-- 
+2.52.0
+

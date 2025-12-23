@@ -1,0 +1,32 @@
+From 9a6ee881ca5efe4dc0ff4b5ec14cb5a2b76ee245 Mon Sep 17 00:00:00 2001
+From: iabdalkader <i.abdalkader@gmail.com>
+Date: Tue, 23 Dec 2025 14:20:46 +0100
+Subject: [PATCH 2/2] slave_bt: fix uhci_ll_rx_set_eof_mode function name.
+
+Signed-off-by: iabdalkader <i.abdalkader@gmail.com>
+---
+ .../esp/esp_driver/network_adapter/main/slave_bt.h        | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/esp_hosted_fg/esp/esp_driver/network_adapter/main/slave_bt.h b/esp_hosted_fg/esp/esp_driver/network_adapter/main/slave_bt.h
+index 87e29f7..30acaf1 100644
+--- a/esp_hosted_fg/esp/esp_driver/network_adapter/main/slave_bt.h
++++ b/esp_hosted_fg/esp/esp_driver/network_adapter/main/slave_bt.h
+@@ -95,10 +95,10 @@
+ 
+     #if defined(CONFIG_IDF_TARGET_ESP32C3)
+ 
+-      #define BT_TX_PIN         5
+-      #define BT_RX_PIN         18
+-      #define BT_RTS_PIN        19
+-      #define BT_CTS_PIN        8
++      #define BT_TX_PIN         21
++      #define BT_RX_PIN         20
++      #define BT_RTS_PIN        4
++      #define BT_CTS_PIN        3
+ 
+     #elif defined(CONFIG_IDF_TARGET_ESP32S3)
+ 
+-- 
+2.52.0
+

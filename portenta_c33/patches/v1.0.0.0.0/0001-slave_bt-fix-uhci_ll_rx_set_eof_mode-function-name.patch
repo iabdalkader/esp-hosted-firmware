@@ -1,0 +1,26 @@
+From c96020d8d6f9e0a9aada89c6ff8307d00b8e60eb Mon Sep 17 00:00:00 2001
+From: iabdalkader <i.abdalkader@gmail.com>
+Date: Tue, 23 Dec 2025 13:53:25 +0100
+Subject: [PATCH 1/2] slave_bt: fix uhci_ll_rx_set_eof_mode function name.
+
+Signed-off-by: iabdalkader <i.abdalkader@gmail.com>
+---
+ esp_hosted_fg/esp/esp_driver/network_adapter/main/slave_bt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/esp_hosted_fg/esp/esp_driver/network_adapter/main/slave_bt.c b/esp_hosted_fg/esp/esp_driver/network_adapter/main/slave_bt.c
+index d4e626a..4493dd1 100644
+--- a/esp_hosted_fg/esp/esp_driver/network_adapter/main/slave_bt.c
++++ b/esp_hosted_fg/esp/esp_driver/network_adapter/main/slave_bt.c
+@@ -374,7 +374,7 @@ static void init_uart_c3_s3(void)
+ 	// configure UHCI
+ 	uhci_ll_init(s_uhci_hw);
+ #if ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 5, 0)
+-	uhci_ll_set_eof_mode(s_uhci_hw, UHCI_RX_LEN_EOF);
++	uhci_ll_rx_set_eof_mode(s_uhci_hw, UHCI_RX_LEN_EOF);
+ #else
+ 	uhci_ll_rx_set_eof_mode(s_uhci_hw, UHCI_RX_LEN_EOF);
+ #endif
+-- 
+2.52.0
+
